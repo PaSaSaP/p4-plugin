@@ -349,6 +349,16 @@ public class PerforceScm extends SCM {
 		envVars.put("NODE_NAME", envVars.get("NODE_NAME", nodeName));
 		String executor = ExecutorHelper.getExecutorID(buildWorkspace);
 		envVars.put("EXECUTOR_NUMBER", envVars.get("EXECUTOR_NUMBER", executor));
+		// set env variables from last build if exists
+		if (lastRun != null) {
+			EnvVars ev = lastRun.getEnvironment(listener);
+			for (Map.Entry<String, String> entry : ev.entrySet()) {
+				if (!envVars.containsKey(entry.getKey())) {
+					envVars.put(entry.getKey(), entry.getValue());
+				}
+			}
+		}
+
 
 		Workspace ws = (Workspace) workspace.clone();
 		// JENKINS-48434 by setting rootPath to null will leave client's root unchanged
