@@ -344,9 +344,6 @@ public class PerforceScm extends SCM {
 			throws InterruptedException, IOException {
 		PrintStream log = listener.getLogger();
 
-		// set NODE_NAME to Node or default "master" if not set
-		String nodeName = NodeHelper.getNodeName(buildWorkspace);
-		envVars.put("NODE_NAME", envVars.get("NODE_NAME", nodeName));
 		String executor = ExecutorHelper.getExecutorID(buildWorkspace);
 		envVars.put("EXECUTOR_NUMBER", envVars.get("EXECUTOR_NUMBER", executor));
 		// set env variables from last build if exists
@@ -358,6 +355,9 @@ public class PerforceScm extends SCM {
 				}
 			}
 		}
+		// set NODE_NAME to Node or default "master" if not set
+		String nodeName = NodeHelper.getNodeName(buildWorkspace);
+		envVars.put("NODE_NAME", envVars.get("NODE_NAME", nodeName));
 
 
 		Workspace ws = (Workspace) workspace.clone();
